@@ -1,7 +1,9 @@
-version: "2"
 services:
   new-easyepg:
-    image: takealug/new-easyepg:latest
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: "Dockerfile.amd64"
     container_name: new-easyepg
     environment:
       - PUID=99
@@ -11,11 +13,14 @@ services:
       - REPO=script.service.easyepg-lite
       - BRANCH=main
     volumes:
-      - /home/dockeruser/new-easyepg/data:/easyepg
-      - /home/dockeruser/new-easyepg/xml:/easyepg/xml
+      - easyepg:/easyepg
+      - easyepg_xml:/easyepg/xml
     tmpfs:
       - /var/log
       - /tmp
     ports:
       - 4000:4000
     restart: unless-stopped
+volumes:
+  easyepg:
+  easyepg_xml:
